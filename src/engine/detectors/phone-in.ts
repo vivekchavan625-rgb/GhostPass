@@ -6,7 +6,8 @@ export const phoneInDetector: Detector = {
   category: 'phone',
   // Matches Indian phone numbers: +91 / 91 / 0 prefix with 10 digits starting with 6-9
   pattern: /(?:(?:\+91|91|0)[-\s]?)?[6-9]\d{4}[-\s]?\d{5}\b/g,
-  validate: (match: string) => validateIndianPhone(match),
+  validate: (match: string, fullText: string, startIndex: number) =>
+    validateIndianPhone(match, fullText, startIndex),
   confidence: 'high',
   enabled: true
 };

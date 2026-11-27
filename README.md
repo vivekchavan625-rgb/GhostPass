@@ -7,7 +7,7 @@
 **Source Repository:** [https://github.com/vivekchavan625-rgb/GhostPass](https://github.com/vivekchavan625-rgb/GhostPass)  
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](LICENSE)
-[![Tests: 63 Passing](https://img.shields.io/badge/Vitest-63%2F63%20Passed-brightgreen.svg)](#real-verified-numbers)
+[![Tests: 76 Passing](https://img.shields.io/badge/Vitest-76%2F76%20Passed-brightgreen.svg)](#real-verified-numbers)
 [![E2E: 5 Passing](https://img.shields.io/badge/Playwright-5%2F5%20Passed-brightgreen.svg)](#real-verified-numbers)
 [![CSP: connect-src 'none'](https://img.shields.io/badge/CSP-connect--src%20'none'-success.svg)](#architecture--data-flow)
 
@@ -105,8 +105,8 @@ Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'
 
 All metrics reported below reflect verified test runs in the project repository:
 
-- **Unit & Integration Tests**: **63 passed** across 13 test files (`vitest run`).
-- **Engine Test Coverage**: **93.38%** statement coverage across `src/engine/`.
+- **Unit & Integration Tests**: **76 passed** across 15 test files (`vitest run`).
+- **Engine Test Coverage**: **96.01%** statement coverage across `src/engine/` (`vitest run --coverage`).
 - **End-to-End Privacy Verification**: **5 passed** out of 5 tests (`@playwright/test` on Chromium):
   - *Test A*: Zero canary data leakage and 0 post-load network requests.
   - *Test B*: Zero canary content stored in `localStorage`, `sessionStorage`, or `IndexedDB`.
@@ -115,9 +115,9 @@ All metrics reported below reflect verified test runs in the project repository:
   - *Test E*: XSS immunity with inert rendering of malicious `<script>` and `<img onerror>` payloads.
 - **Synthetic Benchmark Results**:
   - Tested on a labeled dataset of **44 synthetic items** (including 21 adversarial negative items).
-  - Overall Precision: **0.917**
+  - Overall Precision: **0.957**
   - Overall Recall: **0.957**
-  - Overall F1 Score: **0.936**
+  - Overall F1 Score: **0.957**
   - *Note: This benchmark evaluates a curated synthetic sample set to test algorithmic rules and edge cases; it does not constitute a statistical guarantee of real-world accuracy across all data distributions.*
 
 ---

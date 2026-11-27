@@ -96,5 +96,13 @@ describe('Detection Engine Suite', () => {
       expect(resolved.length).toBe(1);
       expect(resolved[0].category).toBe('credit-card');
     });
+
+    it('rejects order IDs like ORD-9820112345 while detecting valid phone numbers in same text', () => {
+      const text = 'Order ID ORD-9820112345 has also failed. You can call my mobile +91 98201 12345.';
+      const entities = detectPII(text);
+      expect(entities.length).toBe(1);
+      expect(entities[0].category).toBe('phone');
+      expect(entities[0].value).toBe('+91 98201 12345');
+    });
   });
 });

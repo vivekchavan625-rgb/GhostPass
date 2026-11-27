@@ -110,6 +110,14 @@ describe('Validators Suite', () => {
       expect(validateIndianPhone('9999999999')).toBe(false); // repetitive
     });
 
+    it('rejects digit sequences preceded by identifier prefixes (ORD-, INV-, etc.)', () => {
+      const fullText = 'Order ORD-9820112345 has also failed, invoice INV-9876543210 is due.';
+      expect(validateIndianPhone('9820112345', fullText, 10)).toBe(false);
+      expect(validateIndianPhone('9876543210', fullText, 50)).toBe(false);
+      // But standalone or phone-prefixed numbers pass
+      expect(validateIndianPhone('9820112345', 'Call me on 9820112345 now', 11)).toBe(true);
+    });
+
     it('accepts valid international E.164 phone numbers', () => {
       expect(validateIntlPhone('+1 415 555 2671')).toBe(true);
       expect(validateIntlPhone('+44 20 7946 0912')).toBe(true);

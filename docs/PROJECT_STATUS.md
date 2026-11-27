@@ -9,9 +9,10 @@
 - **Sprint 4 [Cybersecurity & DevSecOps]**: Completed. Codebase security sweep, pinned Playwright E2E verification suite (zero post-load network requests, clean storage invariants, strict CSP blocking, XSS prevention), prototype pollution and ReDoS hardening tests, complete documentation, header verification script.
 
 ### Key Verification Metrics
-- **Unit & Integration Tests**: 63 tests passing across 13 test suites (`vitest`).
-- **Engine Test Coverage**: 93.38% statement coverage on `src/engine`.
+- **Unit & Integration Tests**: 76 tests passing across 15 test suites (`vitest`).
+- **Engine Test Coverage**: 96.01% statement coverage on `src/engine`.
 - **E2E Privacy Verification**: 5 Playwright tests passing in a single run (Tests A-E: Network Interception, Storage Invariant, CSP Enforcement, Golden Journey with stable `data-testid`, and XSS Immunity).
+- **Benchmark Metrics**: 44 labeled items (21 adversarial negatives) with Precision 0.957, Recall 0.957, F1 0.957.
 - **Network Requests**: 0 outbound network requests after page load.
 - **Storage Invariants**: 0 PII tokens or document content in `localStorage`, `sessionStorage`, or `IndexedDB`.
 - **Security Headers**: Verified in `vercel.json` and production build with `connect-src 'none'`.

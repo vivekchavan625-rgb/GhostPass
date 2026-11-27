@@ -15,26 +15,28 @@ GhostPass implements automated testing at three distinct layers:
 ✓ tests/privacy/csp.test.ts (2 tests)
 ✓ tests/privacy/storageScan.test.ts (2 tests)
 ✓ tests/privacy/monitor.test.ts (2 tests)
-✓ tests/engine/validators.test.ts (21 tests)
-✓ tests/engine/detect.test.ts (8 tests)
+✓ tests/engine/validators.test.ts (22 tests)
+✓ tests/engine/detect.test.ts (9 tests)
+✓ tests/engine/coverage-booster.test.ts (4 tests)
 ✓ tests/engine/redos.test.ts (1 test)
 ✓ tests/audit/audit.test.ts (2 tests)
 ✓ tests/engine/prototype-pollution.test.ts (2 tests)
 ✓ tests/engine/csv.test.ts (9 tests)
 ✓ tests/engine/redaction.test.ts (9 tests)
 ✓ tests/data/benchmark.test.ts (2 tests)
+✓ tests/ui/workspace-and-pages.test.tsx (7 tests)
 ✓ tests/engine/xss.test.ts (2 tests)
 ✓ tests/engine/rejected-stats.test.ts (1 test)
 
-Test Files  13 passed (13)
-Tests       63 passed (63)
+Test Files  15 passed (15)
+Tests       76 passed (76)
 ```
 
 ### Coverage Statistics
-- **Statements**: 93.38% statement coverage on `src/engine`
-- **Branches**: > 90%
-- **Functions**: > 95%
-- **Lines**: > 93%
+- **Statements**: 96.01% statement coverage across `src/engine` (v8 coverage)
+- **Branches**: 90.17%
+- **Functions**: 100%
+- **Lines**: 96.01%
 
 ---
 
