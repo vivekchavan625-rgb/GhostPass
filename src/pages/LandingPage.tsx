@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useRouter } from '../context/RouterContext';
 import { Button } from '../components/ui/Button';
-import { Card } from '../components/ui/Card';
 import { Chip } from '../components/ui/Chip';
 import { VaultHero3D } from '../components/VaultHero3D';
 import { SecureSessionGate } from '../components/SecureSessionGate';
+import { RedactionRain } from '../components/RedactionRain';
+import { TiltCard } from '../components/TiltCard';
+import { LiveRedactionDemo } from '../components/LiveRedactionDemo';
 
 // In-memory flag across page views in this session (NOT persisted in localStorage)
 let hasShownBootGateThisSession = false;
@@ -19,12 +21,15 @@ export const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-16 pb-16">
+    <div className="relative space-y-20 pb-20 overflow-hidden">
+      {/* Background Redaction Rain Canvas (low opacity, low CPU, paused when tab hidden) */}
+      <RedactionRain className="opacity-25" />
+
       {/* Secure Session Boot Gate (shown once per session in memory) */}
       {showGate && <SecureSessionGate onDismiss={handleDismissGate} />}
 
       {/* Hero Section */}
-      <section className="pt-8 sm:pt-16 max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="relative z-10 pt-8 sm:pt-16 max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="text-left space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-700 dark:text-violet-400 text-xs font-semibold">
             <span>🛡️</span> Pure Client-Side Privacy
@@ -65,47 +70,54 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* How it Works */}
-      <section className="max-w-6xl mx-auto px-4">
+      {/* Interactive Live Redaction Demo */}
+      <section className="relative z-10 max-w-4xl mx-auto px-4">
+        <LiveRedactionDemo />
+      </section>
+
+      {/* How it Works with 3D Tilt Cards */}
+      <section className="relative z-10 max-w-6xl mx-auto px-4">
         <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-900 dark:text-white mb-10">
           How It Works in 3 Steps
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="flex flex-col gap-3">
-            <div className="w-10 h-10 rounded-lg bg-teal-500/10 text-teal-500 flex items-center justify-center font-bold text-lg">
+          <TiltCard className="flex flex-col gap-3">
+            <div className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20 flex items-center justify-center font-bold text-lg">
               1
             </div>
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Input Document</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
               Paste logs, tickets, code, or upload files (.txt, .csv, .json, .log, .md up to 2 MB).
               Files are read directly into browser memory.
             </p>
-          </Card>
-          <Card className="flex flex-col gap-3">
-            <div className="w-10 h-10 rounded-lg bg-teal-500/10 text-teal-500 flex items-center justify-center font-bold text-lg">
+          </TiltCard>
+
+          <TiltCard className="flex flex-col gap-3">
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center font-bold text-lg">
               2
             </div>
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Deterministic Detection</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
               Rigorous checksum algorithms (Luhn for cards, Verhoeff for Aadhaar) and regexes isolate
               PII without false-positive version tags.
             </p>
-          </Card>
-          <Card className="flex flex-col gap-3">
-            <div className="w-10 h-10 rounded-lg bg-teal-500/10 text-teal-500 flex items-center justify-center font-bold text-lg">
+          </TiltCard>
+
+          <TiltCard className="flex flex-col gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#b6ff3b]/10 text-[#94e815] border border-[#b6ff3b]/20 flex items-center justify-center font-bold text-lg">
               3
             </div>
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Safe Redaction & Export</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
               Apply Full Mask, Partial Mask, or Pseudonymization. Copy sanitized output or download
               clean text/CSV safely.
             </p>
-          </Card>
+          </TiltCard>
         </div>
       </section>
 
       {/* Detection Categories */}
-      <section className="max-w-4xl mx-auto px-4 text-center">
+      <section className="relative z-10 max-w-4xl mx-auto px-4 text-center">
         <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">
           Supported Sensitive Categories
         </h2>
@@ -119,9 +131,9 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Trust Architecture Summary */}
-      <section className="max-w-4xl mx-auto px-4">
-        <Card variant="elevated" className="border-teal-500/30">
+      {/* Trust Architecture Summary with TiltCard */}
+      <section className="relative z-10 max-w-4xl mx-auto px-4">
+        <TiltCard className="border-violet-500/30">
           <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
             <span>🛡️</span> Zero-Trust Client-Side Architecture
           </h2>
@@ -130,7 +142,7 @@ export const LandingPage: React.FC = () => {
             cookies or third-party trackers are installed. User document contents are processed
             locally in volatile memory and are discarded upon page reload or clicking &quot;Clear Memory&quot;.
           </p>
-        </Card>
+        </TiltCard>
       </section>
     </div>
   );

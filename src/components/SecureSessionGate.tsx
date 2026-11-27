@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { privacyMonitor } from '../privacy/monitor';
 import { scanClientStorage } from '../privacy/storageScan';
 import { Button } from './ui/Button';
+import { RedactionRain } from './RedactionRain';
 
 interface BootCheck {
   id: string;
@@ -141,9 +142,11 @@ export const SecureSessionGate: React.FC<SecureSessionGateProps> = ({ onDismiss 
       role="dialog"
       aria-modal="true"
       aria-labelledby="gate-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#070a14]/80 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#070a14]/85 backdrop-blur-md overflow-hidden"
     >
-      <div className="w-full max-w-xl rounded-2xl bg-[#0d1222] border border-violet-500/30 shadow-[0_0_50px_rgba(124,92,255,0.2)] p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in-95 duration-200">
+      <RedactionRain className="opacity-40" />
+
+      <div className="relative z-10 w-full max-w-xl rounded-2xl bg-[#0d1222]/95 border border-violet-500/30 shadow-[0_0_50px_rgba(124,92,255,0.2)] p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in-95 duration-200">
         {/* Terminal Header */}
         <div className="flex items-center justify-between border-b border-slate-800 pb-4">
           <div className="flex items-center gap-2">
