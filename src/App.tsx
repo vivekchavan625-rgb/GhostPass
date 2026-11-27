@@ -9,7 +9,7 @@ import { InsightsPage } from './pages/InsightsPage';
 import { PrivacyCenterPage } from './pages/PrivacyCenterPage';
 import { AuditPage } from './pages/AuditPage';
 import { EvaluatePage } from './pages/EvaluatePage';
-import { RouteStub } from './pages/RouteStub';
+import { AboutPage } from './pages/AboutPage';
 
 const AppContent: React.FC = () => {
   const { currentRoute } = useRouter();
@@ -29,14 +29,7 @@ const AppContent: React.FC = () => {
       case 'evaluate':
         return <EvaluatePage />;
       case 'about':
-        return (
-          <RouteStub
-            title="About GhostPass"
-            badge="OPEN SOURCE ZERO-TRUST"
-            description="GhostPass is designed for developers, auditors, and privacy engineers needing client-side data sanitation without trust compromises."
-            comingInSprint3={false}
-          />
-        );
+        return <AboutPage />;
       default:
         return <LandingPage />;
     }
@@ -55,7 +48,7 @@ const AppContent: React.FC = () => {
         {renderCurrentPage()}
       </main>
       <footer className="border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
-        GhostPass Client-Side Zero-Trust PII Sanitizer • Sprint 2 Active
+        GhostPass • Client-side PII sanitizer • Document contents are processed locally and never transmitted
       </footer>
     </div>
   );
