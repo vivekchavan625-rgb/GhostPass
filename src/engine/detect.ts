@@ -15,10 +15,15 @@ const CATEGORY_PRIORITY: Record<EntityCategory, number> = {
 // 2 MB max input size limit to avoid browser freezes
 export const MAX_INPUT_SIZE = 2 * 1024 * 1024;
 
+export interface DetectResult {
+  entities: Entity[];
+  rejected: Record<string, number>;
+}
+
 /**
  * Detects all enabled PII entities in the text without mutating it.
  * Validates with checksum/format validators, resolves overlapping spans deterministically,
- * and returns sorted entities.
+ * and returns sorted entities along with rejected validation counts.
  */
 export function detectPII(
   text: string,
@@ -27,8 +32,19 @@ export function detectPII(
     detectors?: Detector[];
   }
 ): Entity[] {
+  return detectPIIWithStats(text, options).entities;
+}
+
+export function detectPIIWithStats(
+  text: string,
+  options?: {
+    enabledCategories?: EntityCategory[];
+    detectors?: Detector[];
+  }
+): DetectResult {
+  const rejected: Record<string, number> = {};
   if (!text || text.length === 0) {
-    return [];
+    return { entities: [], rejected };
   }
 
   if (text.length > MAX_INPUT_SIZE) {
@@ -42,6 +58,10 @@ export function detectPII(
   const detectors = (options?.detectors ?? ALL_DETECTORS).filter(
     (d) => d.enabled && (!enabledCategories || enabledCategories.has(d.category))
   );
+
+  for (const detector of detectors) {
+    rejected[detector.id] = 0;
+  }
 
   const rawEntities: Entity[] = [];
   let entityCounter = 0;
@@ -65,6 +85,7 @@ export function detectPII(
       // Run validator
       const isValid = detector.validate(matchText, text, startIndex);
       if (!isValid) {
+        rejected[detector.id] = (rejected[detector.id] ?? 0) + 1;
         continue;
       }
 
@@ -84,7 +105,10 @@ export function detectPII(
   }
 
   // Deduplicate and resolve overlaps deterministically
-  return resolveOverlaps(rawEntities);
+  return {
+    entities: resolveOverlaps(rawEntities),
+    rejected
+  };
 }
 
 /**

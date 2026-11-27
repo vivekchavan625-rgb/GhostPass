@@ -6,7 +6,7 @@ import {
   SanitizeResult,
   SanitizeStats
 } from './types';
-import { detectPII } from './detect';
+import { detectPIIWithStats } from './detect';
 import {
   fullMask,
   partialMask,
@@ -41,7 +41,7 @@ export function sanitize(text: string, options?: SanitizeOptions): SanitizeResul
     clearMapping();
   }
 
-  const entities = detectPII(text, {
+  const { entities, rejected } = detectPIIWithStats(text, {
     enabledCategories: options?.enabledCategories
   });
 
@@ -77,7 +77,8 @@ export function sanitize(text: string, options?: SanitizeOptions): SanitizeResul
     totalEntities: entities.length,
     categoryCounts,
     charsOriginal: text.length,
-    charsRedacted: output.length
+    charsRedacted: output.length,
+    rejected
   };
 
   return {

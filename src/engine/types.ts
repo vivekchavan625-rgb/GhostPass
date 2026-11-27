@@ -43,6 +43,7 @@ export interface SanitizeStats {
   categoryCounts: Record<EntityCategory, number>;
   charsOriginal: number;
   charsRedacted: number;
+  rejected: Record<string, number>; // counts of candidates rejected by validation per detectorId (counts only, no values)
 }
 
 export interface SanitizeResult {

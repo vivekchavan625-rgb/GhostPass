@@ -1,15 +1,88 @@
 import React from 'react';
+import { RouterProvider, useRouter } from './context/RouterContext';
+import { ThemeProvider } from './context/ThemeContext';
+import { ToastProvider } from './components/ui/Toast';
+import { Navbar } from './components/Navbar';
+import { LandingPage } from './pages/LandingPage';
+import { WorkspacePage } from './pages/WorkspacePage';
+import { InsightsPage } from './pages/InsightsPage';
+import { RouteStub } from './pages/RouteStub';
+
+const AppContent: React.FC = () => {
+  const { currentRoute } = useRouter();
+
+  const renderCurrentPage = () => {
+    switch (currentRoute) {
+      case 'home':
+        return <LandingPage />;
+      case 'workspace':
+        return <WorkspacePage />;
+      case 'insights':
+        return <InsightsPage />;
+      case 'privacy':
+        return (
+          <RouteStub
+            title="Privacy Architecture"
+            badge="ZERO-TRUST CLIENT PRIVACY"
+            description="Detailed specifications of GhostPass client-side boundary, memory lifetime, zero-telemetry guarantee, and local execution invariants."
+          />
+        );
+      case 'audit':
+        return (
+          <RouteStub
+            title="Compliance & Audit Log"
+            badge="AUDIT & ATTESTATION"
+            description="Local session audit trail for compliance verification. No server logs, no external reporting."
+          />
+        );
+      case 'evaluate':
+        return (
+          <RouteStub
+            title="Benchmark Evaluation"
+            badge="F1 / PRECISION / RECALL"
+            description="Automated benchmark runner against synthetic datasets with adversarial false-positive testing."
+          />
+        );
+      case 'about':
+        return (
+          <RouteStub
+            title="About GhostPass"
+            badge="OPEN SOURCE ZERO-TRUST"
+            description="GhostPass is designed for developers, auditors, and privacy engineers needing client-side data sanitation without trust compromises."
+          />
+        );
+      default:
+        return <LandingPage />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-teal-500 focus:text-slate-950 focus:font-bold focus:rounded-md"
+      >
+        Skip to main content
+      </a>
+      <Navbar />
+      <main id="main-content" className="flex-1">
+        {renderCurrentPage()}
+      </main>
+      <footer className="border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        GhostPass Client-Side Zero-Trust PII Sanitizer • Sprint 2 Active
+      </footer>
+    </div>
+  );
+};
 
 export const App: React.FC = () => {
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold tracking-tight text-white mb-2">GhostPass</h1>
-      <p className="text-slate-400 mb-6">
-        Browser-only Zero-Trust PII Sanitizer Engine (Sprint 1 Core Engine Active)
-      </p>
-      <div className="p-4 rounded-lg bg-slate-800 border border-slate-700 text-sm font-mono text-emerald-400">
-        Engine ready: Aadhaar, Credit Card, PAN, Email, Phone, IPv4.
-      </div>
-    </div>
+    <ThemeProvider>
+      <RouterProvider>
+        <ToastProvider>
+          <AppContent />
+        </ToastProvider>
+      </RouterProvider>
+    </ThemeProvider>
   );
 };
