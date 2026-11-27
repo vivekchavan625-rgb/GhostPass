@@ -47,8 +47,14 @@ const AppContent: React.FC = () => {
       <main id="main-content" className="flex-1">
         {renderCurrentPage()}
       </main>
-      <footer className="border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
-        GhostPass • Client-side PII sanitizer • Document contents are processed locally and never transmitted
+      <footer className="border-t border-slate-200 dark:border-slate-800/80 py-6 text-center text-xs text-slate-500 dark:text-slate-400 bg-white/50 dark:bg-[#070a14]/50">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <span className="font-semibold text-slate-700 dark:text-slate-300">GhostPass</span>
+          <span className="hidden sm:inline text-slate-400 dark:text-slate-600">•</span>
+          <span>Client-side PII sanitizer</span>
+          <span className="hidden sm:inline text-slate-400 dark:text-slate-600">•</span>
+          <span>Document contents are processed locally and never transmitted</span>
+        </div>
       </footer>
     </div>
   );

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="gpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C5CFF" />
+      <stop offset="100%" stop-color="#22E3FF" />
+    </linearGradient>
+  </defs>
+  <!-- Outer Shield Contour -->
+  <path d="M50 8 L85 24 V50 C85 72 50 92 50 92 C50 92 15 72 15 50 V24 Z" 
+        fill="url(#gpGrad)" 
+        fill-opacity="0.15" 
+        stroke="url(#gpGrad)" 
+        stroke-width="5" 
+        stroke-linejoin="round" />
+  
+  <!-- Ghost Silhouette merging into shield center -->
+  <path d="M35 52 C35 43 41 36 50 36 C59 36 65 43 65 52 V64 C65 64 62 62 59 64 C56 66 53 64 50 64 C47 64 44 66 41 64 C38 62 35 64 35 64 Z" 
+        fill="url(#gpGrad)" />
+        
+  <!-- Ghost Eyes / Keyhole Top -->
+  <circle cx="44" cy="46" r="3" fill="#070A14" />
+  <circle cx="56" cy="46" r="3" fill="#070A14" />
+  
+  <!-- Keyhole Slot -->
+  <path d="M48 50 H52 L53 58 H47 Z" fill="#070A14" />
+</svg>

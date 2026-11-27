@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter, RoutePath } from '../context/RouterContext';
 import { useTheme } from '../context/ThemeContext';
 import { Button } from './ui/Button';
+import { Logo } from './Logo';
 
 export const Navbar: React.FC = () => {
   const { currentRoute, navigate } = useRouter();
@@ -19,19 +20,16 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800/80 bg-white/90 dark:bg-[#070a14]/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <a
             href="#home"
-            className="flex items-center gap-2 font-bold text-xl tracking-tight text-slate-900 dark:text-white"
+            className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-violet-500 rounded-lg p-1"
           >
-            <span className="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-500 border border-teal-500/30 flex items-center justify-center text-lg font-mono">
-              👻
-            </span>
-            <span>GhostPass</span>
+            <Logo size={32} />
           </a>
-          <span className="hidden sm:inline-block px-2 py-0.5 text-[11px] font-mono rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+          <span className="hidden sm:inline-block px-2.5 py-0.5 text-[11px] font-mono rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-700 dark:text-violet-400 font-semibold">
             v0.1.0 • client-side
           </span>
         </div>

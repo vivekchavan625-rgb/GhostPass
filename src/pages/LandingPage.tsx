@@ -1,34 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from '../context/RouterContext';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Chip } from '../components/ui/Chip';
+import { VaultHero3D } from '../components/VaultHero3D';
+import { SecureSessionGate } from '../components/SecureSessionGate';
+
+// In-memory flag across page views in this session (NOT persisted in localStorage)
+let hasShownBootGateThisSession = false;
 
 export const LandingPage: React.FC = () => {
   const { navigate } = useRouter();
+  const [showGate, setShowGate] = useState(!hasShownBootGateThisSession);
+
+  const handleDismissGate = () => {
+    hasShownBootGateThisSession = true;
+    setShowGate(false);
+  };
 
   return (
     <div className="space-y-16 pb-16">
-      {/* Hero Section */}
-      <section className="pt-12 sm:pt-20 text-center max-w-4xl mx-auto px-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-600 dark:text-teal-400 text-xs font-semibold mb-6">
-          <span>🔒</span> Pure Client-Side Privacy
-        </div>
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
-          Your data stays yours.
-        </h1>
-        <p className="mt-6 text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-          Sanitize, redact, and pseudonymize sensitive PII directly in your browser. User document
-          contents are processed locally and never transmitted across the network.
-        </p>
+      {/* Secure Session Boot Gate (shown once per session in memory) */}
+      {showGate && <SecureSessionGate onDismiss={handleDismissGate} />}
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <Button variant="primary" size="lg" onClick={() => navigate('workspace')}>
-            Start Sanitizing →
-          </Button>
-          <Button variant="secondary" size="lg" onClick={() => navigate('privacy')}>
-            Explore Security
-          </Button>
+      {/* Hero Section */}
+      <section className="pt-8 sm:pt-16 max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="text-left space-y-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-700 dark:text-violet-400 text-xs font-semibold">
+            <span>🛡️</span> Pure Client-Side Privacy
+          </div>
+          
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+            Your data stays <span className="bg-gradient-to-r from-violet-500 to-cyan-400 bg-clip-text text-transparent">yours.</span>
+          </h1>
+
+          <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-xl">
+            Sanitize, redact, and pseudonymize sensitive PII directly in your browser. User document
+            contents are processed locally and never transmitted across the network.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={() => navigate('workspace')}
+              className="!bg-gradient-to-r from-violet-600 to-cyan-500 !text-white font-semibold shadow-lg hover:opacity-95"
+            >
+              Start Sanitizing →
+            </Button>
+            <Button
+              variant="secondary"
+              size="lg"
+              onClick={() => navigate('privacy')}
+              className="border border-slate-300 dark:border-slate-700/80"
+            >
+              Explore Security
+            </Button>
+          </div>
+        </div>
+
+        {/* 3D CSS Interactive Vault Hero */}
+        <div className="flex items-center justify-center">
+          <VaultHero3D />
         </div>
       </section>
 
