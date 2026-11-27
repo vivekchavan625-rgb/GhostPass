@@ -372,7 +372,7 @@ export const WorkspacePage: React.FC = () => {
           <div className="flex gap-3 font-mono">
             <span>{charCount} chars</span>
             <span>{wordCount} words</span>
-            <span>{sanitizeResult.stats.totalEntities} PII found</span>
+            <span data-testid="entity-count">{sanitizeResult.stats.totalEntities} PII found</span>
             <span className="text-teal-500 font-semibold">{sanitizeResult.durationMs}ms</span>
           </div>
         </div>

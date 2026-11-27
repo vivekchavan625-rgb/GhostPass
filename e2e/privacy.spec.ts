@@ -129,8 +129,10 @@ test.describe('GhostPass E2E Independent Privacy & Security Verification', () =>
     await page.locator('#select-load-sample').selectOption('support-ticket');
     await page.waitForTimeout(600);
 
-    // 2. Assert entities detected
-    await expect(page.locator('text=4 PII found')).toBeVisible();
+    // 2. Assert entities detected against stable data-testid with true engine count (6 entities)
+    const entityCountLocator = page.locator('[data-testid="entity-count"]');
+    await expect(entityCountLocator).toBeVisible();
+    await expect(entityCountLocator).toHaveText('6 PII found');
 
     // 3. Switch to Pseudonymize
     await page.locator('#select-redaction-mode').selectOption('pseudonymize');

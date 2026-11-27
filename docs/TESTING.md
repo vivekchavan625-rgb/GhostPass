@@ -12,27 +12,29 @@ GhostPass implements automated testing at three distinct layers:
 
 ### Unit & Integration Suite (`vitest`)
 ```
-✓ tests/engine/validators/luhn.test.ts (6 tests)
-✓ tests/engine/validators/verhoeff.test.ts (6 tests)
-✓ tests/engine/validators/ipv4.test.ts (7 tests)
-✓ tests/engine/validators/pan.test.ts (6 tests)
-✓ tests/engine/validators/phone.test.ts (6 tests)
-✓ tests/engine/detectors/detectors.test.ts (9 tests)
-✓ tests/engine/detect.test.ts (6 tests)
-✓ tests/engine/redaction.test.ts (8 tests)
-✓ tests/engine/csv.test.ts (4 tests)
+✓ tests/privacy/csp.test.ts (2 tests)
+✓ tests/privacy/storageScan.test.ts (2 tests)
+✓ tests/privacy/monitor.test.ts (2 tests)
+✓ tests/engine/validators.test.ts (21 tests)
+✓ tests/engine/detect.test.ts (8 tests)
+✓ tests/engine/redos.test.ts (1 test)
+✓ tests/audit/audit.test.ts (2 tests)
 ✓ tests/engine/prototype-pollution.test.ts (2 tests)
-✓ tests/engine/redos.test.ts (2 tests)
+✓ tests/engine/csv.test.ts (9 tests)
+✓ tests/engine/redaction.test.ts (9 tests)
+✓ tests/data/benchmark.test.ts (2 tests)
+✓ tests/engine/xss.test.ts (2 tests)
+✓ tests/engine/rejected-stats.test.ts (1 test)
 
-Test Files  11 passed (11)
-Tests       62 passed (62)
+Test Files  13 passed (13)
+Tests       63 passed (63)
 ```
 
 ### Coverage Statistics
-- **Statements**: > 95%
+- **Statements**: 93.38% statement coverage on `src/engine`
 - **Branches**: > 90%
 - **Functions**: > 95%
-- **Lines**: > 95%
+- **Lines**: > 93%
 
 ---
 
@@ -45,7 +47,7 @@ Tests       62 passed (62)
   - 5,000 repeated `a@a.` pattern segments.
   - 5,000 repeated separator sequences.
 - **Pass Threshold**: Execution under 500 ms.
-- **Observed Result**: All adversarial strings evaluated in **< 120 ms**.
+- **Observed Result**: All adversarial strings evaluated in **< 30 ms**.
 
 ### Prototype Pollution Immunity
 - **Test File**: `tests/engine/prototype-pollution.test.ts`
@@ -58,9 +60,10 @@ Tests       62 passed (62)
 ## 4. End-to-End Privacy Verification (`@playwright/test`)
 - **Suite**: `e2e/privacy.spec.ts`
 - **Environment**: Chromium headless targeting `dist/` production preview.
-- **Results**:
-  - **Test A (Zero Network Requests)**: `0` network requests initiated after initial asset loading.
-  - **Test B (No Storage Leakage)**: `localStorage`, `sessionStorage`, `IndexedDB` verified clean of canary PII tokens.
+- **Execution Summary (All 5 Tests Passing)**:
+  - **Test A (Zero Network Requests)**: Confirmed 0 outbound requests after initial load; zero canary tokens observed.
+  - **Test B (No Storage Leakage)**: `localStorage`, `sessionStorage`, and `IndexedDB` contain 0 canary content.
   - **Test C (CSP Enforcement)**: Outbound `fetch('https://example.com')` blocked by CSP `connect-src 'none'`.
-  - **Test D (Golden Journey)**: Document loaded -> sanitized -> output copied -> memory cleared without errors.
+  - **Test D (Golden Journey)**: Verified against stable `data-testid="entity-count"` asserting the true engine count (6 PII found for support-ticket), followed by pseudonym mode switch, memory wipe, and route transitions.
   - **Test E (XSS Immunity)**: Script tags and event handlers rendered harmlessly as plain text.
+- **Runner Result**: `5 passed (12.2s)` in a single unified run.

@@ -18,3 +18,10 @@ To ensure transparent zero-trust claims, GhostPass explicitly documents its oper
 ## 4. Performance & File Size Bounds
 - **Input Size Limit**: Ingestion is capped at **2 MB** per file or paste event to prevent browser tab UI lockup and memory exhaustion.
 - **Spreadsheet Complexity**: Extremely large CSV files (> 50,000 cells) may introduce UI rendering latency during diff calculation.
+
+## 5. Dependency Audit & Supply Chain Disclosures
+- **Audit Findings**: Running full `npm audit` reports 17 advisories (3 critical, 4 high, 10 moderate).
+- **Tooling Scope**: All 17 advisories reside exclusively in local development tooling dependencies (`vitest`, `tinypool`, `vite`/`esbuild`, `postcss`, `playwright`, `minimatch`/`glob`).
+- **Production Safety**: Running `npm audit --omit=dev` reports **0 vulnerabilities**.
+- **Remediation Rationale**: These dev-dependency warnings were not auto-fixed via `npm audit fix --force` because resolving them requires major-version upgrades (breaking changes) that fall outside the scope of this project; the production client bundle contains zero vulnerabilities and remains completely unaffected.
+

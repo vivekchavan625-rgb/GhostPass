@@ -1,4 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
+import os from 'os';
+import path from 'path';
 
 export default defineConfig({
   testDir: './e2e',
@@ -6,7 +8,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: 0,
   workers: 1,
-  outputDir: './.playwright-results',
+  outputDir: path.join(os.tmpdir(), 'ghostpass-playwright-results'),
   reporter: 'list',
   use: {
     baseURL: 'http://localhost:4173',
