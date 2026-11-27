@@ -6,6 +6,9 @@ import { Navbar } from './components/Navbar';
 import { LandingPage } from './pages/LandingPage';
 import { WorkspacePage } from './pages/WorkspacePage';
 import { InsightsPage } from './pages/InsightsPage';
+import { PrivacyCenterPage } from './pages/PrivacyCenterPage';
+import { AuditPage } from './pages/AuditPage';
+import { EvaluatePage } from './pages/EvaluatePage';
 import { RouteStub } from './pages/RouteStub';
 
 const AppContent: React.FC = () => {
@@ -20,35 +23,18 @@ const AppContent: React.FC = () => {
       case 'insights':
         return <InsightsPage />;
       case 'privacy':
-        return (
-          <RouteStub
-            title="Privacy Architecture"
-            badge="ZERO-TRUST CLIENT PRIVACY"
-            description="Detailed specifications of GhostPass client-side boundary, memory lifetime, zero-telemetry guarantee, and local execution invariants."
-          />
-        );
+        return <PrivacyCenterPage />;
       case 'audit':
-        return (
-          <RouteStub
-            title="Compliance & Audit Log"
-            badge="AUDIT & ATTESTATION"
-            description="Local session audit trail for compliance verification. No server logs, no external reporting."
-          />
-        );
+        return <AuditPage />;
       case 'evaluate':
-        return (
-          <RouteStub
-            title="Benchmark Evaluation"
-            badge="F1 / PRECISION / RECALL"
-            description="Automated benchmark runner against synthetic datasets with adversarial false-positive testing."
-          />
-        );
+        return <EvaluatePage />;
       case 'about':
         return (
           <RouteStub
             title="About GhostPass"
             badge="OPEN SOURCE ZERO-TRUST"
             description="GhostPass is designed for developers, auditors, and privacy engineers needing client-side data sanitation without trust compromises."
+            comingInSprint3={false}
           />
         );
       default:
