@@ -9,6 +9,9 @@ export interface DialogProps {
   role?: 'dialog' | 'alertdialog';
 }
 
+const FOCUSABLE_SELECTORS =
+  'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export const Dialog: React.FC<DialogProps> = ({
   open,
   onClose,
@@ -18,13 +21,52 @@ export const Dialog: React.FC<DialogProps> = ({
   role = 'dialog',
 }) => {
   const dialogRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<Element | null>(null);
 
+  // Capture focus before dialog opens; restore on close
+  useEffect(() => {
+    if (open) {
+      previousFocusRef.current = document.activeElement;
+      // Focus first focusable element inside dialog after paint
+      const id = setTimeout(() => {
+        const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS);
+        focusable?.[0]?.focus();
+      }, 20);
+      return () => clearTimeout(id);
+    } else {
+      if (previousFocusRef.current instanceof HTMLElement) {
+        previousFocusRef.current.focus();
+      }
+    }
+  }, [open]);
+
+  // Keyboard: Escape to close; Tab focus trap within dialog
   useEffect(() => {
     if (!open) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
+        return;
+      }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusable = Array.from(
+          dialogRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTORS)
+        ).filter((el) => !el.closest('[aria-hidden="true"]'));
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     };
 

@@ -68,6 +68,10 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
         <mark
           key={`ent_${ent.id}`}
           onClick={() => onSelectEntity(ent)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectEntity(ent); } }}
+          role="button"
+          tabIndex={0}
+          aria-label={`${conf.label}: ${originalText.slice(ent.start, ent.end)} — click to inspect`}
           title={`Click to inspect ${conf.label}`}
           className={`cursor-pointer inline-flex items-center gap-1 px-1.5 py-0.5 rounded font-mono text-xs transition-all ${
             conf.bgClass
@@ -135,6 +139,10 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
         <mark
           key={`san_${ent.id}`}
           onClick={() => onSelectEntity(ent)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelectEntity(ent); } }}
+          role="button"
+          tabIndex={0}
+          aria-label={`Redacted ${conf.label}: ${replacement} — click to inspect`}
           title={`Click to inspect redacted ${conf.label}`}
           className={`cursor-pointer inline-flex items-center gap-1 px-1.5 py-0.5 rounded font-mono text-xs transition-all ${
             conf.bgClass
@@ -173,7 +181,9 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
         </span>
         <button
           onClick={() => setSyncScroll((p) => !p)}
-          className="text-xs text-slate-500 dark:text-slate-400 hover:text-teal-500 flex items-center gap-1"
+          aria-pressed={syncScroll}
+          aria-label={`Sync scroll: ${syncScroll ? 'on' : 'off'}`}
+          className="text-xs text-slate-500 dark:text-slate-400 hover:text-teal-500 flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 rounded"
         >
           <span>{syncScroll ? '🔗' : '⛓️‍💥'}</span>
           <span>Sync Scroll: {syncScroll ? 'ON' : 'OFF'}</span>

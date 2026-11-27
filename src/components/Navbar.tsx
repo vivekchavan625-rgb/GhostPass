@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, RoutePath } from '../context/RouterContext';
 import { useTheme } from '../context/ThemeContext';
 import { Button } from './ui/Button';
@@ -8,6 +8,20 @@ export const Navbar: React.FC = () => {
   const { currentRoute, navigate } = useRouter();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+
+  // Close mobile menu on Escape
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+        hamburgerRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
 
   const navLinks: { route: RoutePath; label: string }[] = [
     { route: 'home', label: 'Home' },
@@ -35,14 +49,15 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-1" aria-label="Primary navigation">
           {navLinks.map((link) => {
             const isActive = currentRoute === link.route;
             return (
               <a
                 key={link.route}
                 href={`#${link.route}`}
-                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                aria-current={isActive ? 'page' : undefined}
+                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 ${
                   isActive
                     ? 'bg-slate-100 dark:bg-slate-800 text-teal-600 dark:text-teal-400 font-semibold'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
@@ -59,7 +74,7 @@ export const Navbar: React.FC = () => {
           <button
             onClick={toggleTheme}
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            className="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2"
           >
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
@@ -74,9 +89,12 @@ export const Navbar: React.FC = () => {
           </Button>
 
           <button
+            ref={hamburgerRef}
             onClick={() => setMobileMenuOpen((p) => !p)}
             aria-label="Toggle navigation menu"
-            className="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+            className="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2"
           >
             ☰
           </button>
@@ -85,13 +103,18 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Nav */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 space-y-1">
+        <nav
+          id="mobile-menu"
+          aria-label="Mobile navigation"
+          className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-3 space-y-1"
+        >
           {navLinks.map((link) => (
             <a
               key={link.route}
               href={`#${link.route}`}
               onClick={() => setMobileMenuOpen(false)}
-              className={`block px-3 py-2 rounded-md text-base font-medium ${
+              aria-current={currentRoute === link.route ? 'page' : undefined}
+              className={`block px-3 py-2 rounded-md text-base font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
                 currentRoute === link.route
                   ? 'bg-slate-100 dark:bg-slate-800 text-teal-600 dark:text-teal-400 font-semibold'
                   : 'text-slate-700 dark:text-slate-300'
@@ -100,7 +123,7 @@ export const Navbar: React.FC = () => {
               {link.label}
             </a>
           ))}
-        </div>
+        </nav>
       )}
     </header>
   );

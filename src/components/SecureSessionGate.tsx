@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { privacyMonitor } from '../privacy/monitor';
 import { scanClientStorage } from '../privacy/storageScan';
 import { Button } from './ui/Button';
@@ -24,6 +24,8 @@ export const SecureSessionGate: React.FC<SecureSessionGateProps> = ({ onDismiss 
   ]);
 
   const [completed, setCompleted] = useState(false);
+  const skipButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<Element | null>(null);
 
   // Run the sequence without ANY fetch or network calls
   useEffect(() => {
@@ -122,6 +124,21 @@ export const SecureSessionGate: React.FC<SecureSessionGateProps> = ({ onDismiss 
     };
   }, []);
 
+  // Capture previously focused element and auto-focus SKIP button on mount; restore on unmount
+  useEffect(() => {
+    previousFocusRef.current = document.activeElement;
+    // Defer so the dialog is fully painted before focusing
+    const id = setTimeout(() => {
+      skipButtonRef.current?.focus();
+    }, 50);
+    return () => {
+      clearTimeout(id);
+      if (previousFocusRef.current instanceof HTMLElement) {
+        previousFocusRef.current.focus();
+      }
+    };
+  }, []);
+
   // Keyboard accessibility: Enter or Escape dismisses
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -170,8 +187,10 @@ export const SecureSessionGate: React.FC<SecureSessionGateProps> = ({ onDismiss 
           </div>
 
           <button
+            ref={skipButtonRef}
             onClick={onDismiss}
-            className="text-xs font-mono text-slate-400 hover:text-white px-2.5 py-1 rounded-md bg-slate-800/80 hover:bg-slate-700 transition-colors border border-slate-700"
+            aria-label="Skip security verification and enter workspace"
+            className="text-xs font-mono text-slate-400 hover:text-white px-2.5 py-1 rounded-md bg-slate-800/80 hover:bg-slate-700 transition-colors border border-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400"
             title="Press Esc to Skip"
           >
             SKIP [ESC]
